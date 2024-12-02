@@ -121,7 +121,7 @@ sampleData <- samples
 colData(vsdata)$cell_type <- sampleData$cell_type[match(colnames(vsdata), sampleData$sample_id)]
 colnames(colData(vsdata))
 
-thap9_expr <- assay(vsdata)["THAP9", ]  # To Get expression for THAP9
+thap9_expr <- assay(vsdata)["THAP9", ]  
 df_thap9 <- data.frame(Expression = thap9_expr,
                        Condition = colData(vsdata)$cell_type)
 
