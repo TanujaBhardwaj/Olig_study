@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 # Read the excel file
 df = pd.read_csv("H3K27ac_adult.csv")
 
-# Show the first few rows
 print("First few rows of the dataset:")
 print(df.head())
 
@@ -55,11 +54,11 @@ print(df.describe())
 
 
 ```python
-# Filter the data for the region of interest
+# Filtering the region of interest from the data
 region_of_interest = 'chr4_82900684_82919969'
 filtered_data = df[df['peak_coordinates_hg38'] == region_of_interest]
 
-# Display the filtered data
+# filtered data
 print("Filtered data for the region of interest:")
 print(filtered_data)
 ```
@@ -75,11 +74,11 @@ print(filtered_data)
 # Check for any entries on Chromosome 4 to see if the region is mislabeled or nearby
 chr4_data = df[df['peak_coordinates_hg38'].str.startswith('chr4')]
 
-# Display the first few rows of Chromosome 4 data
+# rows of Chromosome 4 from data
 print("Entries for Chromosome 4:")
 print(chr4_data.head())
 
-# Check the range of coordinates for Chromosome 4
+# To Check the range of coordinates for Chromosome 4
 chr4_data['peak_coordinates_hg38'].str.extract(r'chr4_(\d+)_(\d+)').astype(int).describe()
 ```
 
@@ -173,16 +172,16 @@ chr4_data['peak_coordinates_hg38'].str.extract(r'chr4_(\d+)_(\d+)').astype(int).
 
 
 ```python
-# Extract start and end coordinates for Chromosome 4 and convert to numeric
+# Extracting start and end coordinates for Chromosome 4 and converting them to numeric
 chr4_data[['start', 'end']] = chr4_data['peak_coordinates_hg38'].str.extract(r'chr4_(\d+)_(\d+)').astype(int)
 
-# Check for nearby regions within a 10,000 bp range of the region of interest
+# Checking for nearby regions within a 10,000 bp range of the region of interest
 start_of_interest = 82900684
 end_of_interest = 82919969
 
 nearby_regions = chr4_data[(chr4_data['start'] <= end_of_interest) & (chr4_data['end'] >= start_of_interest)]
 
-# Display the nearby regions
+# nearby regions
 print("Nearby regions within 10,000 bp of the region of interest:")
 print(nearby_regions)
 ```
@@ -217,7 +216,7 @@ print(nearby_regions)
 
 
 ```python
-# Visualize the read counts for the nearby regions
+# The read counts for the nearby regions
 plt.figure(figsize=(12, 6))
 
 # Melt the data for easier plotting
@@ -229,7 +228,7 @@ melted_data = nearby_regions.melt(
     value_name='Read Count'
 )
 
-# Plot using seaborn
+# Plotting
 sns.barplot(data=melted_data, x='Sample', y='Read Count', hue='peak_coordinates_hg38')
 plt.title('Read Counts for Nearby Regions in Chromosome 4')
 plt.xticks(rotation=45)
