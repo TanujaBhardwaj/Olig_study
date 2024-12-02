@@ -1,0 +1,17 @@
+###############          ************ LIBRARIES USED FOR EXPRESSION ANALYSIS*****************      ##################
+
+library(tidyverse)
+library(dplyr)
+library(DESeq2)
+library(ggplot2)
+library(matrixStats)
+library(cowplot)
+library(readr)
+library(scales) 
+library(viridis)
+library(DT)
+library(gt)
+library(VennDiagram)
+library(grid)
+
+###############        **********************************************************************       ###################
