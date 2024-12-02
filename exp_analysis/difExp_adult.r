@@ -94,7 +94,7 @@ ggplot(res_deseq, aes(baseMean, log2FoldChange, colour=padj)) +
 
 ######        ****FOR Ploting counts for GENE****       ######
 
-THAPCounts <- plotCounts(dds, gene="THAP9", intgroup="cell_type", returnData=TRUE)  # Extract counts for the gene THAP9
+THAPCounts <- plotCounts(dds, gene="THAP9", intgroup="cell_type", returnData=TRUE)  
 
 # Plot the data using ggplot2
 colourPallette <- c("#7145cd","#90de4a","#cd46c1","#77dd8e","#592b79","#d7c847","#6378c9","#619a3c",
@@ -115,7 +115,7 @@ ggplot(THAPCounts, aes(x=cell_type, y=count, color=cell_type, group=cell_type)) 
 
 ###########     ******Plotting results for THAP9 gene*****      ##########
 
-thap9_res <- subset(res, rownames(res) == "THAP9")  # Filter for THAP9 gene in the DESeq2 results
+thap9_res <- subset(res, rownames(res) == "THAP9") 
 sampleData <- samples
 
 colData(vsdata)$cell_type <- sampleData$cell_type[match(colnames(vsdata), sampleData$sample_id)]
@@ -225,11 +225,11 @@ down_genes <- rownames(subset(res, log2FoldChange < 0 & padj < 0.1))
 thap9_status <- ifelse("THAP9" %in% up_genes, "Upregulated", 
                        ifelse("THAP9" %in% down_genes, "Downregulated", "Not found"))
 
-
 fill_colors <- c("green4", "salmon3")  # Upregulated in green, Downregulated in salmon
 highlight_color <- "red"  # Highlight color for THAP9
 
 # ******** Venn diagram with two sets: upregulated and downregulated *********** #
+
 venn.plot <- venn.diagram(
   x = list(Upregulated = up_genes, Downregulated = down_genes),
   category.names = c("Upregulated", "Downregulated"),
