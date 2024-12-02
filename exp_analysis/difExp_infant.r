@@ -1,20 +1,3 @@
-###############          ************LOAD LIBRARIES*****************      ##################
-
-library(tidyverse)
-library(dplyr)
-library(DESeq2)
-library(ggplot2)
-library(matrixStats)
-library(cowplot)
-library(readr)
-library(scales) 
-library(viridis)
-library(DT)
-library(gt)
-library(VennDiagram)
-library(grid)
-
-
 ###           ********LOAD COUNTS DATA & SAMPLE INFO********        ####
 samples <- read.csv("sample_info_Infants_table.csv")
 view(samples)
@@ -78,7 +61,7 @@ summary(sigs)
 #low counts [2]     : 0, 0%
 #(mean count < 1)
 
-# Save the DESeq2 results to a TSV file with a tab separator
+# To Save the DESeq2 results 
 write.table(sigs, file = "diffExp_MOvsOPC_Infant.txt", sep = ",", row.names = TRUE, quote = FALSE)
 
 
@@ -87,11 +70,10 @@ sigs_LF1 <- sigs[sigs$log2FoldChange >= 1, ]
 dim(sigs_LF1) # 4588    6
 
 
-###   **************   **VISUALIZTION**   ****************   ##########
+###   **************   **VISUALIZATION**   ****************   ##########
 
 #############      ****MA PLOT****            #########
 plotMA(res)
-
 
 res_deseq <- as.data.frame(res) # Coerce to a data frame
 head(res_deseq)
@@ -102,19 +84,18 @@ res_deseq$significant <- ifelse(res_deseq$padj < .1, "Significant", NA)
 ggplot(res_deseq, aes(baseMean, log2FoldChange, colour=padj)) + 
   geom_point(size=1) + scale_y_continuous(limits=c(-3, 3), oob=squish) + 
   scale_x_log10() + geom_hline(yintercept = 0, colour="darkorchid4", size=1, linetype="longdash") + 
-  labs(x="mean of normalized counts", y="log fold change",                            # Y-axis label
+  labs(x="mean of normalized counts", y="log fold change",                            
        title="MA plot Infant samples") + scale_colour_viridis(direction=-1, trans='sqrt') + 
   theme_bw() + 
   geom_density_2d(colour="black", size=1) +
-  # Add a cross marker and label for "THAP9"
   geom_point(data = subset(res_deseq, rownames(res_deseq) == "THAP9"),
-             aes(baseMean, log2FoldChange), shape = 19, size = 2, color = "red") +  # Cross for THAP9
+             aes(baseMean, log2FoldChange), shape = 19, size = 2, color = "red") + 
   geom_text(data = subset(res_deseq, rownames(res_deseq) == "THAP9"),
             aes(baseMean, log2FoldChange, label = "THAP9"), vjust = -1, size = 5, color = "red")  # Label for THAP9
 
 ######        ****FOR Ploting counts for GENE****       ######
 
-THAPCounts <- plotCounts(dds, gene="THAP9", intgroup="cell_type", returnData=TRUE)  # Extract counts for the gene THAP9
+THAPCounts <- plotCounts(dds, gene="THAP9", intgroup="cell_type", returnData=TRUE) 
 
 # Plot the data using ggplot2
 colourPallette <- c("#7145cd","#90de4a","#cd46c1","#77dd8e","#592b79","#d7c847","#6378c9","#619a3c",
@@ -135,7 +116,7 @@ ggplot(THAPCounts, aes(x=cell_type, y=count, color=cell_type, group=cell_type)) 
 
 ###########     ******Plotting results for THAP9 gene*****      ##########
 
-thap9_res <- subset(res, rownames(res) == "THAP9")  # Filter for THAP9 gene in the DESeq2 results
+thap9_res <- subset(res, rownames(res) == "THAP9")
 sampleData <- samples
 
 colData(vsdata)$cell_type <- sampleData$cell_type[match(colnames(vsdata), sampleData$sample_id)]
@@ -174,7 +155,7 @@ dev.off()
 
 ############################################################# 
 
-###   ***Create the volcano plot with annotation and a cross for "THAP9"***  ###
+###   ***To Create the volcano plot with annotation***  ###
 volcano_infant <- ggplot(sigs) +
   aes(y = -log10(padj), x = log2FoldChange) +
   geom_point(size = 2) +
@@ -203,11 +184,11 @@ df_thap9 <- data.frame(
   Condition = cell_type
 )
 
-# Extractting  statistical results
+# statistical results
 log2FC <- round(thap9_res$log2FoldChange, 2)
 p_adj <- format(thap9_res$padj, scientific = TRUE)
 
-# Plotting *********
+# ***Plotting ***
 ggplot(df_thap9, aes(x = Condition, y = Expression, fill = Condition)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.9, width = 0.5, color = "black", size = 0.8) +
   labs(
