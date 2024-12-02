@@ -1,19 +1,3 @@
-###############          ************LOAD LIBRARIES*****************      ##################
-
-library(tidyverse)
-library(dplyr)
-library(DESeq2)
-library(ggplot2)
-library(matrixStats)
-library(cowplot)
-library(readr)
-library(scales) 
-library(viridis)
-library(DT)
-library(gt)
-library(VennDiagram)
-library(grid)
-
 ###           ********LOAD COUNTS DATA & SAMPLE INFO********        ####
 
 samples <- read.csv("sample_info_Adults_table.csv")
@@ -45,12 +29,12 @@ dds <- DESeq(dds)
 ###     ***** Variance stabilizing transformation ******     ####
 vsdata <- vst(dds, blind = FALSE)
 
-# Plot PCA with the correct argument
+# ***Plotting PCA*** 
 pcaData <- plotPCA(vsdata, intgroup = "cell_type")
 plotPCA(vsdata, intgroup = "cell_type")
 
 
-## Dispersion estimates *************
+## ***Dispersion estimates ***
 plotDispEsts(dds)
 
 ###########   ************* EXTRACTING RESULTS***************   ##################
@@ -78,7 +62,7 @@ summary(sigs)
 #low counts [2]     : 0, 0%
 #(mean count < 1)
 
-# Save the DESeq2 results to a TSV file with a tab separator
+# Save the DESeq2 results 
 write.table(sigs, file = "diffExp_MOvsOPC_Adult.txt", sep = ",", row.names = TRUE, quote = FALSE)
 
 
@@ -105,9 +89,9 @@ ggplot(res_deseq, aes(baseMean, log2FoldChange, colour=padj)) +
   geom_density_2d(colour="black", size=1) +
   # Add a cross marker and label for "THAP9"
   geom_point(data = subset(res_deseq, rownames(res_deseq) == "THAP9"),
-             aes(baseMean, log2FoldChange), shape = 19, size = 2, color = "red") +  # Cross for THAP9
+             aes(baseMean, log2FoldChange), shape = 19, size = 2, color = "red") +  
   geom_text(data = subset(res_deseq, rownames(res_deseq) == "THAP9"),
-            aes(baseMean, log2FoldChange, label = "THAP9"), vjust = -1, size = 5, color = "red")  # Label for THAP9
+            aes(baseMean, log2FoldChange, label = "THAP9"), vjust = -1, size = 5, color = "red") 
 
 ######        ****FOR Ploting counts for GENE****       ######
 
@@ -138,7 +122,7 @@ sampleData <- samples
 colData(vsdata)$cell_type <- sampleData$cell_type[match(colnames(vsdata), sampleData$sample_id)]
 colnames(colData(vsdata))
 
-thap9_expr <- assay(vsdata)["THAP9", ]  # To Get expression for THAP9
+thap9_expr <- assay(vsdata)["THAP9", ]  
 df_thap9 <- data.frame(Expression = thap9_expr,
                        Condition = colData(vsdata)$cell_type)
 
@@ -171,7 +155,7 @@ dev.off()
 
 ############################################################# 
 
-###   ***Create the volcano plot with annotation and a cross for "THAP9"***  ###
+###   ***Create the volcano plot with annotation ***  ###
 volcano_Adult <- ggplot(sigs) +
   aes(y = -log10(padj), x = log2FoldChange) +
   geom_point(size = 2) +
@@ -201,7 +185,7 @@ df_thap9 <- data.frame(
 log2FC <- round(thap9_res$log2FoldChange, 2)
 p_adj <- format(thap9_res$padj, scientific = TRUE)
 
-# Plotting *********
+# ***Plotting ***
 ggplot(df_thap9, aes(x = Condition, y = Expression, fill = Condition)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.9, width = 0.5, color = "black", size = 0.8) +
   labs(
