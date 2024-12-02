@@ -83,7 +83,7 @@ res_deseq$significant <- ifelse(res_deseq$padj < .1, "Significant", NA)
 ggplot(res_deseq, aes(baseMean, log2FoldChange, colour=padj)) + 
   geom_point(size=1) + scale_y_continuous(limits=c(-3, 3), oob=squish) + 
   scale_x_log10() + geom_hline(yintercept = 0, colour="darkorchid4", size=1, linetype="longdash") + 
-  labs(x="mean of normalized counts", y="log fold change",                            # Y-axis label
+  labs(x="mean of normalized counts", y="log fold change",                           
        title="MA plot Adult samples") + scale_colour_viridis(direction=-1, trans='sqrt') + 
   theme_bw() + 
   geom_density_2d(colour="black", size=1) +
@@ -145,7 +145,7 @@ str(pcaData_df)
 pdf('pca_plot_Adult.pdf')
 ggplot(pcaData_df, aes(x = PC1, y = PC2, color = cell_type, label = name)) +
   geom_point(size = 3) +
-  geom_text(vjust = 1.5, size = 3.5) + # This adds text labels to the points
+  geom_text(vjust = 1.5, size = 3.5) + 
   xlab(paste0("PC1 ")) +
   ylab(paste0("PC2 ")) +
   labs(title = "PCA Plot of Adult samples") +
