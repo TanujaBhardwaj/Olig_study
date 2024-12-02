@@ -87,7 +87,6 @@ ggplot(res_deseq, aes(baseMean, log2FoldChange, colour=padj)) +
        title="MA plot Adult samples") + scale_colour_viridis(direction=-1, trans='sqrt') + 
   theme_bw() + 
   geom_density_2d(colour="black", size=1) +
-  # Add a cross marker and label for "THAP9"
   geom_point(data = subset(res_deseq, rownames(res_deseq) == "THAP9"),
              aes(baseMean, log2FoldChange), shape = 19, size = 2, color = "red") +  
   geom_text(data = subset(res_deseq, rownames(res_deseq) == "THAP9"),
