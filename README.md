@@ -1,4 +1,4 @@
-# Transcriptional Landscape of THAP9 across Oligodendrocyte Developmental Stages
+# Integrative Genomic Analysis Identifies THAP9 as a Human-Specific Regulator of Oligodendrocyte Differentiation
 
 ### Supplementary Materials
 
